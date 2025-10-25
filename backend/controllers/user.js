@@ -1,5 +1,6 @@
 import User from "../models/user.js"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export async function handleSignIN(req,res){
     const {fistName, email, password} = req.body;
@@ -19,7 +20,17 @@ export async function handleSignIN(req,res){
 
     await newUser.save();
 
-    return res.status(200).end();
+   const token = jwt.sign({ email: findUser.email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",   // crucial for cross-origin cookie
+        path: "/",          // makes it available on all routes
+        maxAge: 3600000,
+    });
+
+    return res.status(200).send({message: "SignIN Successfully", token : token});
 }
 
 export async function handleSignUP(req,res){
@@ -32,7 +43,17 @@ export async function handleSignUP(req,res){
 
     if(!verifyUser) return res.send({message:"Either the email or the password is wrong !!!"});
 
-    return res.status(200).end();
+    const token = jwt.sign({ email: findUser.email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",   // crucial for cross-origin cookie
+        path: "/",          // makes it available on all routes
+        maxAge: 3600000,
+    });
+
+    return res.status(200).send({message: "Login Successfully", token : token});
 }
 
 
