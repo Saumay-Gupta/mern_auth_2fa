@@ -20,7 +20,7 @@ function SignIN2() {
         }
         else{
             try{
-                const res = await axios.post('http://localhost:5000/signIN', {fistName,email,password} )
+                const res = await axios.post('http://localhost:5000/signIN', {fistName,email,password} , {withCredentials:true});
                 console.log(res.data.message);
                 navigate('/home');
             }

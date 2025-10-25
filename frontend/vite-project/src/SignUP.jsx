@@ -19,8 +19,8 @@ function SignUP() {
         }
         else{
             try{
-                const res = await axios.post('http://localhost:5000/signUP', {email,password} )
-                console.log(res.data.message);
+                const res = await axios.post('http://localhost:5000/signUP', {email,password},{ withCredentials:true } )
+                console.log(res.data);
                 navigate('/home');
             }
             catch(err){
