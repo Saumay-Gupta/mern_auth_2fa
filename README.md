@@ -7,7 +7,7 @@ A secure authentication system with login, signup, JWT-based session management,
 ## 💡 Overview
 - This project implements a **complete authentication system** using the **MERN stack**.  
 - It includes features like:
-  - User **registration** and **login**  
+  - User **Registration**, User **Login* and User **Logout**   
   - Password **hashing using bcrypt**  
   - **JWT-based authentication** for protected routes  
   - **Two-Factor Authentication (2FA)** using OTP for added security  
