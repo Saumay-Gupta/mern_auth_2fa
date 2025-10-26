@@ -13,7 +13,7 @@ function Home() {
     .then((res)=>{
       console.log('User Res -> ', res.data);
 
-      if(res.data.message === "Invalid Token" || res.data.message === "No Token") navigate('/signIN');
+      if(res.data.message === "Invalid Token" || res.data.message == "No Token") navigate('/');
     })
     .catch((err)=>{
       console.log('Verify_User Errro..!!!');

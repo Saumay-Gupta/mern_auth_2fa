@@ -1,19 +1,36 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+
 function SignIN() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [firstNameWarning, setFirstNameWarning] = useState('');
+    const [email, setEmail] = useState('');
+    const [emailWarning, setEmailWarning] = useState('');
     
     const navigate = useNavigate();
 
-    const handleNext = () => {
-        if(firstName.length != 0){
-            localStorage.setItem("firstName", `${firstName}`);
-            navigate('/signIN');
+    const handleNext = async () => {
+        if(email.length != 0){
+            await axios.post('http://localhost:5000/sendOTP', {email: email} , {withCredentials: true})
+            .then((res)=>{
+                console.log(res.data.message)
+                if(res.data.message == "Email Already Registered, go for Login"){
+                    setEmailWarning("Email Already Registered, redirecting to 'Login Page'");
+                    setTimeout(() => {
+                        navigate('/signUP');
+                    }, 5000); 
+                }
+                else{
+                    console.log("OTP response -> ", res.data);
+                    localStorage.setItem("page", "signup")
+                    navigate('/verifyOTP');
+                }
+            })
+            .catch((err)=>{
+                console.log("SignIN EMAIL ERROR");
+            })
         }
         else{
-            setFirstNameWarning("Enter first name please..")
+            setEmailWarning("Enter email please..")
         }
     }
   return (
@@ -25,27 +42,17 @@ function SignIN() {
         </div>
 
         <div className='flex flex-col ml-5 mt-10 w-1/2 items-start'>
-            <h1 className='text-white text-xl'>Enter your name</h1>
+            <h1 className='text-white text-xl'>Enter your mail</h1>
             <input type="text"
-            value={firstName}
+            value={email}
             onChange={ (e) =>
                 { 
-                    setFirstName(e.target.value)
+                    setEmail(e.target.value)
                 }
             }
             className='mt-10 rounded focus:border-blue-500 border-white border-2 w-70 transition-colors duration-300 text-white p-2' 
-            placeholder='Enter First Name' />
-            <p className='text-red-500'>{firstNameWarning}</p>
-
-            <input type="text"
-            value={lastName}
-            onChange={ (e) =>
-                { 
-                    setLastName(e.target.value)
-                }
-            }
-            className='mt-10 rounded focus:border-blue-500 border-white border-2 w-70 transition-colors duration-300 text-white p-2'  
-            placeholder='Enter Last Name (optional)'/>
+            placeholder='Enter your mail' />
+            <p className='text-red-500'>{emailWarning}</p>
 
             <button
             onClick={handleNext} 

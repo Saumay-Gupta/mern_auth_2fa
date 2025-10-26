@@ -19,9 +19,23 @@ function SignUP() {
         }
         else{
             try{
-                const res = await axios.post('http://localhost:5000/signUP', {email,password},{ withCredentials:true } )
-                console.log(res.data);
-                navigate('/home');
+                await axios.post('http://localhost:5000/sendOTP2', {email,password},{ withCredentials:true } )
+                .then((res)=>{
+                    if(res.data.message == "Email not registered"){
+                        setPasswordWarning("Email Not Registered, redirecting for SignIN");
+                        setTimeout(()=>{
+                            navigate('/signIN')
+                        },5000)
+                    }
+                    if(res.data.message == "Either the email or the password is wrong !!!"){
+                        setPasswordWarning("Either the email or the password is wrong !!!");
+                    }
+                    else{
+                        console.log("SEND OTP RESPONSE FROM LOGIN ->",res.data);
+                        localStorage.setItem("page", "login")
+                        navigate('/verifyOTP');
+                    }
+                })
             }
             catch(err){
                 console.log("Frontend SigIn error");

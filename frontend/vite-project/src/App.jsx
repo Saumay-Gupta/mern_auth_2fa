@@ -4,6 +4,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import SignIN2 from './SignIN2.jsx'
 import SignUP from './SignUP.jsx'
 import Home from './Home.jsx'
+import Verification from './Verification.jsx'
 function App() {
   
   const router = createBrowserRouter(
@@ -13,6 +14,7 @@ function App() {
         <Route path='/signIN' element={<SignIN2/>}/>
         <Route path='/signUP' element={<SignUP/>}/>
         <Route path='/home' element={<Home/>}/>
+        <Route path='/verifyOTP' element={<Verification/>}/>
       </>
     )
   )

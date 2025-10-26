@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import TwoFactorModal from "../components/TwoFactorModal";
+import LogoutModal from "../components/LogoutModal";
 
 export default function ProfileDropdown() {
   const [open, setOpen] = useState(false);
@@ -18,9 +19,9 @@ export default function ProfileDropdown() {
 
   const [showModal, setShowModal] = useState(false);
   const closeModal = () => setShowModal(false);
-  // const handleTwoFactorModal = () =>{
 
-  // }
+  const [showModal2, setShowModal2] = useState(false);
+  const closeModal2 = () => setShowModal2(false);
 
   return (
     <>
@@ -40,13 +41,21 @@ export default function ProfileDropdown() {
             >
             Enable Two-Factor Authorization
           </button>
-          <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+          <button
+            onClick={() => setShowModal2(true)}
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100">
             Logout
           </button>
         </div>
       )}
     </div>
-    
+        { showModal2 && 
+          (
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40">
+            <LogoutModal closeModal2={closeModal2} />
+          </div>
+          ) 
+        }
         { showModal && 
           (
           <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40">
